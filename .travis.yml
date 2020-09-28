@@ -8,7 +8,7 @@ cache: yarn
 before_script:
   # Do nothing
 script:
-  # Do nothing
+  - npm test
 after_script:
   # Generate test coverage and send to code climate
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
