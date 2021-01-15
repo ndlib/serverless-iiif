@@ -1,11 +1,10 @@
 {
-  "name": "serverless-iiif",
+  "name": "serverless-iiif-dependencies",
   "version": "2.0.3",
-  "description": "Lambda wrapper for iiif-processor",
+  "description": "Dependencies for serverless IIIF",
   "author": "Michael B. Klein",
   "license": "Apache-2.0",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "aws-sdk": "^2.368.0",
     "iiif-processor": "~0.3.4"
   }
