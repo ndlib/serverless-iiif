@@ -25,7 +25,7 @@ const handleRequestFunc = async (event, context, callback) => {
     return callback(null, { statusCode: 302, headers: { Location: location }, body: 'Redirecting to info.json' });
   } else {
     // IMAGE REQUEST
-    return await handleImageRequestFunc(event, context, callback);
+    return handleImageRequestFunc(event, context, callback);
   }
 };
 
