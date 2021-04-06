@@ -23,6 +23,14 @@ Parameters:
     Type: Number
     Description: The timeout for the lambda.
     Default: 10
+  CacheEnabled:
+    Type: String
+    Description: Enables API response caching.
+    Default: "false"
+  CacheTtl:
+    Type: Number
+    Description: API cache time in seconds.
+    Default: "3600"
 Resources:
   Dependencies:
     Type: "AWS::Serverless::LayerVersion"
@@ -122,6 +130,16 @@ Resources:
       StageName:
         Fn::Sub: "${StageName}"
       EndpointConfiguration: "REGIONAL"
+      CacheClusterEnabled:
+        Fn::Sub: "${CacheEnabled}"
+      CacheClusterSize: "0.5"
+      MethodSettings:
+        - ResourcePath: "/*"
+          HttpMethod: "*"
+          CachingEnabled:
+            Fn::Sub: "${CacheEnabled}"
+          CacheTtlInSeconds:
+            Fn::Sub: "${CacheTtl}"
       Cors:
         AllowMethods: "'GET'"
         AllowOrigin: "'*'"
@@ -167,6 +185,8 @@ Resources:
                     statusCode: "200"
                 passthroughBehavior: "when_no_match"
                 httpMethod: "POST"
+                cacheKeyParameters:
+                  - "method.request.path.id"
                 contentHandling: "CONVERT_TO_TEXT"
                 type: "aws_proxy"
             options:
@@ -245,6 +265,8 @@ Resources:
                       method.response.header.Access-Control-Allow-Origin: "'*'"
                 passthroughBehavior: "when_no_match"
                 httpMethod: "POST"
+                cacheKeyParameters:
+                  - "method.request.path.id"
                 contentHandling: "CONVERT_TO_TEXT"
                 type: "aws_proxy"
             options:
@@ -337,6 +359,7 @@ Resources:
                 httpMethod: "POST"
                 cacheNamespace: "frz8df"
                 cacheKeyParameters:
+                  - "method.request.path.id"
                   - "method.request.path.proxy"
                 contentHandling: "CONVERT_TO_TEXT"
                 type: "aws_proxy"
@@ -380,9 +403,6 @@ Resources:
                     statusCode: "200"
                 passthroughBehavior: "when_no_match"
                 httpMethod: "POST"
-                cacheNamespace: "frz8df"
-                cacheKeyParameters:
-                  - "method.request.path.proxy"
                 contentHandling: "CONVERT_TO_TEXT"
                 type: "aws_proxy"
         definitions:
